@@ -1,0 +1,1 @@
+# ginquiry-frontend
