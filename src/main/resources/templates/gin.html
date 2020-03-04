@@ -22,18 +22,18 @@
             margin-top: 1em;
         }
 
-        .brandTitle {
+        .ginTitle {
             font-weight: bold;
             display: block;
             padding-top: 2.0em;
             padding-bottom: 0.5em;
         }
 
-        .brands {
+        .gins {
             border-top: 1px solid black
         }
 
-        .brand {
+        .gin {
             display: block;
         }
 
@@ -41,16 +41,26 @@
             padding-top: 0.5em;
         }
 
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* TESTING BELOW */
+
+        .ginName {
+            padding-left: 0.5em;
+        }
+
+        .ginDesc {
+            padding-left: 0.5em;
+        }
+
         .brandName {
             padding-left: 0.5em;
         }
 
-        .brandId {
+        .ginId {
             opacity: 0%;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
         }
 
     </style>
@@ -66,35 +76,34 @@
 
 <div class="main container">
     <div class="input">
-        <form action="/brand/post" method="post">
-            <span>Add Brand:</span><input type="text" name="objName"/>
+        <form action="/gin/post" method="post">
+            <span>Gin Name:</span><input type="text" name="objName"/>
+            <span>Brand Name:</span><input type="text" name="brandName"/>
+            <span>Gin Description:</span><input type="text" name="description"/>
             <input type="submit" value="Post"/>
         </form>
     </div>
 
-    <div class="brandTitle">
-        <span>Current Brands:</span>
+    <div class="ginTitle">
+        <span>Current Gins:</span>
     </div>
 
-    <div class="brands">
+    <div class="gins" style="overflow-x:auto;">
 
         <table>
-            <div th:each="model: ${models}" class="brand">
+            <div th:each="model: ${models}" class="gin">
                 <tr>
-                    <td><span th:text="${model.name}" class="brandName">brandName</span></td>
-                    <td><span th:text="${model.id}" class="brandId">brandId</span></td>
+                    <td><span th:text="${model.name}" class="ginName">ginName</span></td>
+                    <td><span th:text="${model.brand.name}" class="brandName">brand</span></td>
+                    <td><span th:text="${model.description}" class="ginDesc">description</span></td>
+                    <td><span th:text="${model.id}" class="ginId">ginId</span></td>
                 </tr>
             </div>
         </table>
-
     </div>
-</div>
 
-
-</div>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
 </body>
 </html>

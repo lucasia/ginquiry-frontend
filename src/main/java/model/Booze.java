@@ -27,6 +27,10 @@ public class Booze implements Nameable {
         this.description = description;
     }
 
+    public Booze(@NonNull String name) {
+        this.name = name;
+    }
+
     public Booze() {
     }
 }
