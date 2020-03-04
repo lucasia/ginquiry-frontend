@@ -57,17 +57,10 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
 		<!-- end server side -->
 
 
 		<!-- test dependencies -->
-		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -80,22 +73,8 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
+	<!-- end test dependencies -->
 
-	<!-- front end -->
-	<!--
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	-->
-	<!-- end front end -->
 
 	<build>
 		<plugins>

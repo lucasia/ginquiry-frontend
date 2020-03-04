@@ -1,8 +1,7 @@
 package com.lucasia.ginquiryfrontend.controller;
 
 import com.lucasia.ginquiryfrontend.BrandClient;
-import domain.Brand;
-import org.springframework.beans.factory.annotation.Qualifier;
+import model.Brand;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
