@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ginquiry Error Page</title>
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+
+    <style>
+        body {
+            padding-top: 80px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+    </style>
+</head>
+
+<body marginwidth="0" marginheight="0">
+<div class="container">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/gin">Ginquiry</a>
+            </div>
+        </div>
+    </nav>
+
+    <p>Uh oh, something happened. No worries, Get your Gin <a href="/gin">here</a>!</p>
+
+    <table>
+        <tr>
+            <td>Timestamp</td>
+            <td>
+                <span th:text="${timestamp}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Path</td>
+            <td>
+                <span th:text="${path}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Error</td>
+            <td>
+                <span th:text="${error}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>
+                <span th:text="${status}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>
+                <span th:text="${message}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Exception</td>
+            <td>
+                <span th:text="${exception}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Stack Track</td>
+            <td>
+                <span th:text="${trace}"></span>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
