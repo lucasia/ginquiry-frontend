@@ -13,6 +13,7 @@ import java.util.List;
 
 @FeignClient(
         value="gins",
-        url="${ginquiry.gins.endpoint:http://localhost:8081/gins}")
+        url="${ginquiry.gins.endpoint:http://localhost:8081/gins}",
+        configuration = FeignClientConfiguration.class)
 public interface GinClient extends GinquiryClient<Booze, Long> {
 }
