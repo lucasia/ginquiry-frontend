@@ -1,4 +1,4 @@
-package model;
+package com.lucasia.ginquiryfrontend.model;
 
 public interface Nameable {
 

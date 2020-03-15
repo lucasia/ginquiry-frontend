@@ -1,15 +1,10 @@
-package model;
+package com.lucasia.ginquiryfrontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NonNull;
 
-import javax.persistence.*;
-
 @Data
-/*
- * Need to add Year, Botanical (ingredients), Notes (taste), Geography/Location (Japanese, Highland, Isley)
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Booze implements Nameable {
 

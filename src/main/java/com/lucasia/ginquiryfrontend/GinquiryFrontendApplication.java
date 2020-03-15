@@ -11,6 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class GinquiryFrontendApplication {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(GinquiryFrontendApplication.class, args);
 	}

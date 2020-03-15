@@ -1,9 +1,8 @@
 package com.lucasia.ginquiryfrontend.controller;
 
-import com.lucasia.ginquiryfrontend.BrandClient;
-import com.lucasia.ginquiryfrontend.GinClient;
-import model.Booze;
-import model.Brand;
+import com.lucasia.ginquiryfrontend.client.GinClient;
+import com.lucasia.ginquiryfrontend.model.Booze;
+import com.lucasia.ginquiryfrontend.model.Brand;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
