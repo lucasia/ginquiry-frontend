@@ -1,14 +1,13 @@
 package com.lucasia.ginquiryfrontend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lucasia.ginquiryfrontend.controller.BrandClientController;
+import com.lucasia.ginquiryfrontend.controller.HttpUriBuilder;
 import com.lucasia.ginquiryfrontend.controller.LoginController;
 import com.lucasia.ginquiryfrontend.model.Brand;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,44 +33,38 @@ public class BrandHttpIT {
     @Value("${ginquiry.brands.endpoint}")
     private String brandsEndpoint;
 
-    @Autowired
-    private TestRestTemplate testRestTemplate;
+    private HttpUriBuilder uriBuilder;
 
-    private String clientBaseUrl;
+    @Value("${spring.security.user.name}")
+    private String username;
 
-    private String clientBrandUrl;
-
-    private String clientLoginUrl;
+    @Value(("${spring.security.user.password}"))
+    private String password;
 
     @BeforeEach
     void setUp() {
-        clientBaseUrl = "http://localhost:" + port;
-
-        clientLoginUrl = clientBaseUrl + LoginController.LOGIN_PATH;
-
-        clientBrandUrl = clientBaseUrl + BrandClientController.BRAND_PAGE_PATH; // path to the UI
-
-        // testRestTemplate = testRestTemplate.withBasicAuth("guest", "guest");
+        uriBuilder = new HttpUriBuilder(port);
     }
-
 
     @Test
     public void testAddNewBrandViaHttpBypassingUIController() throws Exception {
-        testRestTemplate = testRestTemplate.withBasicAuth("guest", "guest");
+        final TestRestTemplate testRestTemplate = new TestRestTemplate().withBasicAuth(username, password);
 
         final Brand brand = new Brand(UUID.randomUUID().toString());
 
         final HttpEntity<Brand> request = new HttpEntity<>(brand, new HttpHeaders());
-        final ResponseEntity<String> results = this.testRestTemplate.postForEntity(new URI(brandsEndpoint),
+        final ResponseEntity<String> results = testRestTemplate.postForEntity(new URI(brandsEndpoint),
                 request, String.class);
 
         Assertions.assertEquals(HttpStatus.OK, results.getStatusCode());
         Assertions.assertTrue(results.getBody().contains(brand.getName()));
     }
 
+
     @Test
     public void testAddNewBrandViaHttpUsingJsonBypassingUIController() throws Exception {
-        testRestTemplate = testRestTemplate.withBasicAuth("guest", "guest");
+        final TestRestTemplate testRestTemplate = new TestRestTemplate().withBasicAuth(username, password);
+
 
         final Brand brand = new Brand(UUID.randomUUID().toString());
 
@@ -82,7 +75,7 @@ public class BrandHttpIT {
 
         final HttpEntity<String> request = new HttpEntity<>(brandJson, headers);
 
-        final String results = this.testRestTemplate.postForObject(new URI(brandsEndpoint), request, String.class);
+        final String results = testRestTemplate.postForObject(new URI(brandsEndpoint), request, String.class);
 
         Assertions.assertNotNull(results);
         Assertions.assertTrue(results.contains(brand.getName()));
@@ -90,12 +83,12 @@ public class BrandHttpIT {
 
     @Test
     public void testGetBrandViaUIController() throws Exception {
-        testRestTemplate = new TestRestTemplate(TestRestTemplate.HttpClientOption.ENABLE_COOKIES); // needed to pass the cookies
+        final TestRestTemplate testRestTemplate = new TestRestTemplate(TestRestTemplate.HttpClientOption.ENABLE_COOKIES); // needed to pass the cookies
 
-        final ResponseEntity<String> loginResponse = loginAndAssertSuccess();
+        final ResponseEntity<String> loginResponse = loginAndAssertSuccess(testRestTemplate);
 
         // logged in, should be able to navigate to the page now
-        final ResponseEntity<String> getBrandResults = this.testRestTemplate.getForEntity(new URI(clientBrandUrl), String.class);
+        final ResponseEntity<String> getBrandResults = testRestTemplate.getForEntity(uriBuilder.clientBrandUri(), String.class);
 
         Assertions.assertEquals(HttpStatus.OK, getBrandResults.getStatusCode());
         Assertions.assertTrue(getBrandResults.getBody().contains("Rock Rose")); // assume there's some brands setup already
@@ -103,19 +96,20 @@ public class BrandHttpIT {
 
     @Test
     public void testAddNewBrandViaHttpViaUIController() throws Exception {
-        testRestTemplate = new TestRestTemplate(TestRestTemplate.HttpClientOption.ENABLE_COOKIES); // needed to pass the cookies
+        final TestRestTemplate testRestTemplate = new TestRestTemplate(TestRestTemplate.HttpClientOption.ENABLE_COOKIES); // needed to pass the cookies
 
         final Brand brand = new Brand(UUID.randomUUID().toString());
 
-        final ResponseEntity<String> loginResponse = loginAndAssertSuccess();
+        final ResponseEntity<String> loginResponse = loginAndAssertSuccess(testRestTemplate);
 
         final HttpEntity<MultiValueMap<String, String>> brandRequest = createBrandRequest(brand);
 
-        final ResponseEntity<String> postBrandResponse = this.testRestTemplate.postForEntity(new URI(clientBrandUrl + "/post"), brandRequest, String.class);
+        final ResponseEntity<String> postBrandResponse = testRestTemplate.postForEntity(
+                new URI(uriBuilder.clientBrandUri().toString() + "/post"), brandRequest, String.class);
         Assertions.assertEquals(HttpStatus.FOUND, postBrandResponse.getStatusCode());
 
         // now check that our new brand is added
-        final ResponseEntity<String> getBrandResults = this.testRestTemplate.getForEntity(new URI(clientBrandUrl), String.class);
+        final ResponseEntity<String> getBrandResults = testRestTemplate.getForEntity(uriBuilder.clientBrandUri(), String.class);
         Assertions.assertEquals(HttpStatus.OK, getBrandResults.getStatusCode());
         Assertions.assertTrue(getBrandResults.getBody().contains(brand.getName())); // assume there's some brands setup already
     }
@@ -131,14 +125,14 @@ public class BrandHttpIT {
         return new HttpEntity<>(map, headers);
     }
 
-    private ResponseEntity<String> loginAndAssertSuccess() throws URISyntaxException {
+    private ResponseEntity<String> loginAndAssertSuccess(TestRestTemplate testRestTemplate) throws URISyntaxException {
         final HttpEntity<MultiValueMap<String, String>> loginRequest = createLoginRequest();
 
-        final ResponseEntity<String> loginResponse = this.testRestTemplate.exchange(new URI(clientLoginUrl), HttpMethod.POST, loginRequest, String.class);
+        final ResponseEntity<String> loginResponse = testRestTemplate.exchange(uriBuilder.clientLoginUri(), HttpMethod.POST, loginRequest, String.class);
 
         final HttpHeaders loginResponseHeaders = loginResponse.getHeaders();
 
-        Assertions.assertEquals(clientBaseUrl+"/", loginResponseHeaders.getLocation().toString());  // redirects us to home
+        Assertions.assertEquals(uriBuilder.baseUri()+"/", loginResponseHeaders.getLocation().toString());  // redirects us to home
         List<String> setCookieHeader = loginResponseHeaders.get("Set-Cookie");  // confirm that login set the cookie
         Assertions.assertFalse(setCookieHeader.isEmpty());
         Assertions.assertTrue(setCookieHeader.get(0).contains("JSESSIONID"));
@@ -156,7 +150,5 @@ public class BrandHttpIT {
 
         return new HttpEntity<>(map, headers);
     }
-
-
 
 }

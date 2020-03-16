@@ -84,16 +84,6 @@ public abstract class AbstractCrudControllerTest<T extends Nameable> {
         getPageAndVerifyAll(path, Collections.singletonList(nameable));
     }
 
-    protected void testAddNewSucceeds(T nameable) throws Exception {
-        final ResultActions resultActions = saveEntity(nameable);
-
-        resultActions.andDo(
-                print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(Matchers.containsString(nameable.getName())));
-
-    }
-
     protected ResultActions saveEntity(T nameable) throws Exception {
         Mockito.when(getRepository().save(nameable)).thenReturn(nameable);
 

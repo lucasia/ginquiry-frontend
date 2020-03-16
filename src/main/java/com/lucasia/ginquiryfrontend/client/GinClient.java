@@ -1,7 +1,6 @@
 package com.lucasia.ginquiryfrontend.client;
 
 
-import com.lucasia.ginquiryfrontend.SecurityConfiguration;
 import com.lucasia.ginquiryfrontend.model.Booze;
 import com.lucasia.ginquiryfrontend.security.CustomFeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,7 +11,7 @@ import org.springframework.cloud.openfeign.FeignClient;
         configuration = CustomFeignConfig.class)
 public interface GinClient extends GinquiryClient<Booze, Long> {
 
-    public final String GINS_NAME = "gins";
+    String GINS_NAME = "gins";
 
-    public final String GINS_PATH = "/"+GINS_NAME;
+    String GINS_PATH = "/"+GINS_NAME;
 }

@@ -1,7 +1,6 @@
 package com.lucasia.ginquiryfrontend.client;
 
 
-import com.lucasia.ginquiryfrontend.SecurityConfiguration;
 import com.lucasia.ginquiryfrontend.model.Brand;
 import com.lucasia.ginquiryfrontend.security.CustomFeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,8 +11,7 @@ import org.springframework.cloud.openfeign.FeignClient;
         configuration = CustomFeignConfig.class)
 public interface BrandClient extends GinquiryClient<Brand, Long>  {
 
-    public final String BRAND_NAME = "brands";
+    String BRAND_NAME = "brands";
 
-    public final String BRAND_PATH = "/"+BRAND_NAME;
-
+    String BRAND_PATH = "/"+BRAND_NAME;
 }

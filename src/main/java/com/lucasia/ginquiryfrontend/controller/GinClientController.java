@@ -14,17 +14,19 @@ public class GinClientController extends AbstractClientController<Booze, Long>{
 
     public static final String GIN_PAGE_NAME = "gin";
 
+    public static final String GIN_PATH = "/"+GIN_PAGE_NAME;
+
     public GinClientController(GinClient client) {
         super(client);
     }
 
     @Override
-    @GetMapping("/"+GIN_PAGE_NAME)
+    @GetMapping(GIN_PATH)
     public String findAll(Model model) {
         return super.findAll(model);
     }
 
-    @PostMapping("/"+GIN_PAGE_NAME+"/post")
+    @PostMapping(GIN_PATH+"/post")
     public String save(@RequestParam String objName,
                        @RequestParam String description,
                        @RequestParam String brandName,

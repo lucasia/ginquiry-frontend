@@ -1,4 +1,4 @@
-package com.lucasia.ginquiryfrontend;
+package com.lucasia.ginquiryfrontend.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -8,12 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    @Value("${spring.security.user.name}")
-    private String username;
-
-    @Value(("${spring.security.user.password}"))
-    private String password;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -30,12 +24,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .logout()
                     .permitAll();
     }
-
-    /*
-    @Bean
-    public BasicAuthRequestInterceptor basicAuthRequestInterceptor() {
-        return new BasicAuthRequestInterceptor(username, password);
-    }
-*/
 
 }
