@@ -17,4 +17,7 @@ public interface GinquiryClient<T, ID extends Long> {
 
     @RequestMapping(method=RequestMethod.POST, path="/")
     T save(@RequestBody T message);
+
+    @RequestMapping(method=RequestMethod.GET, path="/&name={name}")
+    T findByName(@PathVariable("name") String name);
 }

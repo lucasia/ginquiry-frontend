@@ -20,28 +20,45 @@ public abstract class AbstractClientController<T, ID extends Long> {
         this.client = client;
     }
 
+    public T findById(ID id) {
+        throw new UnsupportedOperationException("FindById not implemented");
+    }
+
+    public T findByName(String name) {
+        throw new UnsupportedOperationException("FindByName not implemented");
+    }
+
+
     public String findAll(Model model) {
         if (model.containsAttribute("name")) {
             String name = (String) model.asMap().get("name");
             model.addAttribute("greeting", String.format("%s %s", greeting, name));
         }
 
-        final List<T> models = client.findAll();
+        final List<T> models = findAll();
 
         model.addAttribute("models", models);
 
         return getPageName();
     }
 
-    public String save(@RequestParam String objName, Model model) {
+    public List<T> findAll() {
+        return client.findAll();
+    }
+
+    public String save(@RequestParam(value="name") String objName, Model model) {
         if (objName != null && !objName.trim().isEmpty()) {
 
             final T dto = newInstance(objName);
 
-            client.save(dto);
-
+            final T saved = save(dto);
         }
+
         return "redirect:/" + getPageName();
+    }
+
+    public T save(T dto) {
+        return client.save(dto);
     }
 
     public abstract T newInstance(String objName);
@@ -51,4 +68,6 @@ public abstract class AbstractClientController<T, ID extends Long> {
     public GinquiryClient<T, ID> getClient() {
         return client;
     }
+
+
 }
