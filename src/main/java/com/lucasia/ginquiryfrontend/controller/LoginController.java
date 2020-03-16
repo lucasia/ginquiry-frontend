@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginController {
 
+    public static final String LOGIN = "login";
+    public static String LOGIN_PATH = "/"+ LOGIN;
+
+    public static final String GUEST_USER = "guest";
+
     @GetMapping("/")
     public String index() {
         return "home";

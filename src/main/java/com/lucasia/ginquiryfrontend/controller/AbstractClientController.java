@@ -57,7 +57,7 @@ public abstract class AbstractClientController<T, ID extends Long> {
         return "redirect:/" + getPageName();
     }
 
-    public T save(T dto) {
+    private T save(T dto) {
         return client.save(dto);
     }
 
