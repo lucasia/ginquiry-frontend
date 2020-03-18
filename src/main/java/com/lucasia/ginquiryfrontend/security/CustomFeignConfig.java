@@ -17,5 +17,4 @@ public class CustomFeignConfig {
         return new BasicAuthRequestInterceptor(username, password);
     }
 
-
 }
