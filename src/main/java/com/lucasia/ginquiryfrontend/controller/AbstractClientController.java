@@ -2,7 +2,6 @@ package com.lucasia.ginquiryfrontend.controller;
 
 import com.lucasia.ginquiryfrontend.client.GinquiryClient;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -10,9 +9,6 @@ import java.util.List;
 
 @Log4j2
 public abstract class AbstractClientController<T, ID extends Long> {
-
-    @Value("${greeting:Hello}")
-    private String greeting;
 
     private GinquiryClient<T, ID> client;
 
@@ -30,11 +26,6 @@ public abstract class AbstractClientController<T, ID extends Long> {
 
 
     public String findAll(Model model) {
-        if (model.containsAttribute("name")) {
-            String name = (String) model.asMap().get("name");
-            model.addAttribute("greeting", String.format("%s %s", greeting, name));
-        }
-
         final List<T> models = findAll();
 
         model.addAttribute("models", models);
